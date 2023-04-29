@@ -41,6 +41,7 @@ func (s *Stack[T]) Clear() {
 	}
 }
 
+// TODO optimize
 func (s *Stack[T]) FindMaxItem() *Stack[T] {
 	comparison := Stack[T]{}
 
