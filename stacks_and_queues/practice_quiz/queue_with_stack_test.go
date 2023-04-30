@@ -3,7 +3,7 @@ package practicequiz_test
 import (
 	"testing"
 
-	pq "github.com/cemgurhan/princetonalgo/stacks_and_queues/practice_quiz/question_one"
+	pq "github.com/cemgurhan/princetonalgo/stacks_and_queues/practice_quiz"
 	"github.com/stretchr/testify/assert"
 )
 
