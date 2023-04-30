@@ -35,13 +35,6 @@ func (s *Stack[T]) Pop() (T, error) {
 	return item, nil
 }
 
-func (s *Stack[T]) Clear() {
-	for range *s {
-		s.Pop()
-	}
-}
-
-// TODO optimize
 func (s *Stack[T]) FindMaxItem() *Stack[T] {
 	comparison := Stack[T]{}
 
@@ -58,7 +51,7 @@ func (s *Stack[T]) FindMaxItem() *Stack[T] {
 		comparionsItem, _ := comparison.Pop()
 
 		if item > comparionsItem {
-			comparison.Clear()
+			comparison = Stack[T]{}
 			comparison.Push(item)
 			continue
 		} else if comparionsItem > item {

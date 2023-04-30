@@ -44,15 +44,6 @@ func TestPop_WithEmptyStack_ReturnsEmptyStringAndError(t *testing.T) {
 	assert.Equal(t, "", actualItem)
 }
 
-func TestClear_WithNonEmptyStack_ClearsStack(t *testing.T) {
-	actualStack := sq.Stack[int]{1, 2, 3, 4}
-
-	expectedStack := sq.Stack[int]{}
-	actualStack.Clear()
-
-	assert.Equal(t, expectedStack, actualStack)
-}
-
 func TestFindMaxItem_WithNonEmptyStack_ReturnsMaxItem(t *testing.T) {
 	testStack := sq.Stack[int]{1, 9, 3, 4}
 
