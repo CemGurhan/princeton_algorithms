@@ -1,30 +1,66 @@
 package practicequiz
 
 import (
-	"errors"
-
-	sq "github.com/cemgurhan/princetonalgo/stacks_and_queues/stacks"
+	"golang.org/x/exp/constraints"
 )
 
 // Queue with two stacks. Implement a queue with two stacks so
 // that each queue operations takes a constant amortized number of stack operations.
 
-func Enqueue(item string, queue sq.Stack[string]) *sq.Stack[string] {
-	return queue.Push(item)
+type Queue[T constraints.Ordered] []T
+
+func (q *Queue[T]) Enqueue(item T) *Queue[T] {
+	return q.push(item)
 }
 
-func Dequeue(queue sq.Stack[string]) (string, error) {
-	reverseQueue := sq.Stack[string]{}
+func (q *Queue[T]) Dequeue() T {
+	reverseQueue := Queue[T]{}
+	queueLength := len(*q)
+	var item T
 
-	if queue.IsEmpty() {
-		return "", errors.New("queue empty")
+	if q.isEmpty() {
+		return item
 	}
 
-	for _, item := range queue {
-		reverseQueue.Push(item)
+	for i := 0; i < queueLength; i++ {
+		originalItem := q.pop()
+		reverseQueue.push(originalItem)
 	}
 
-	dequeued, _ := reverseQueue.Pop()
+	dequeued := reverseQueue.pop()
+	reverseQueueLength := len(reverseQueue)
 
-	return dequeued, nil
+	for i := 0; i < reverseQueueLength; i++ {
+		reverseItem := reverseQueue.pop()
+		q.push(reverseItem)
+	}
+
+	return dequeued
+}
+
+func (s *Queue[T]) isEmpty() bool {
+	if len(*s) == 0 {
+		return true
+	}
+
+	return false
+}
+
+func (s *Queue[T]) push(item T) *Queue[T] {
+	*s = append(*s, item)
+	return s
+}
+
+func (s *Queue[T]) pop() T {
+	length := len(*s)
+	var item T
+
+	if s.isEmpty() {
+		return item
+	}
+
+	item = (*s)[length-1]
+	*s = (*s)[:length-1]
+
+	return item
 }

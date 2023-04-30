@@ -1,8 +1,6 @@
 package stacksandqueues
 
 import (
-	"errors"
-
 	"golang.org/x/exp/constraints"
 )
 
@@ -21,18 +19,18 @@ func (s *Stack[T]) Push(item T) *Stack[T] {
 	return s
 }
 
-func (s *Stack[T]) Pop() (T, error) {
+func (s *Stack[T]) Pop() T {
 	length := len(*s)
 	var item T
 
 	if s.IsEmpty() {
-		return item, errors.New("stack empty")
+		return item
 	}
 
 	item = (*s)[length-1]
 	*s = (*s)[:length-1]
 
-	return item, nil
+	return item
 }
 
 func (s *Stack[T]) FindMaxItem() *Stack[T] {
@@ -48,7 +46,7 @@ func (s *Stack[T]) FindMaxItem() *Stack[T] {
 			continue
 		}
 
-		comparionsItem, _ := comparison.Pop()
+		comparionsItem := comparison.Pop()
 
 		if item > comparionsItem {
 			comparison = Stack[T]{}

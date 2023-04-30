@@ -5,7 +5,6 @@ import (
 
 	sq "github.com/cemgurhan/princetonalgo/stacks_and_queues/stacks"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestPush_WithEmptyStack_SuccessfullyAddsItemToTopOfStack(t *testing.T) {
@@ -17,13 +16,21 @@ func TestPush_WithEmptyStack_SuccessfullyAddsItemToTopOfStack(t *testing.T) {
 	assert.Equal(t, expectedStack, *actualStack)
 }
 
+func TestPush_WithNonEmptyStack_SuccessfullyAddsItemToTopOfStack(t *testing.T) {
+	testStack := sq.Stack[string]{"Hello"}
+
+	expectedStack := sq.Stack[string]{"Hello", "Friend"}
+	actualStack := testStack.Push("Friend")
+
+	assert.Equal(t, expectedStack, *actualStack)
+}
+
 func TestPop_WithNonEmptyStack_SuccessfullyRemovesAndReturnsItemFromTopOfStack(t *testing.T) {
 	testStack := sq.Stack[string]{"Hello", "There", "Friend"}
 
-	expectedItem, err := testStack.Pop()
-	actualItem := "Friend"
+	actualItem := testStack.Pop()
+	expectedItem := "Friend"
 
-	require.NoError(t, err)
 	assert.Equal(t, expectedItem, actualItem)
 }
 
@@ -35,12 +42,11 @@ func TestIsEmpty_WithEmptyStack_ReturnsTrue(t *testing.T) {
 	assert.Equal(t, expectedBool, actualBool)
 }
 
-func TestPop_WithEmptyStack_ReturnsEmptyStringAndError(t *testing.T) {
+func TestPop_WithEmptyStack_ReturnsEmptyString(t *testing.T) {
 	testStack := sq.Stack[string]{}
 
-	actualItem, err := testStack.Pop()
+	actualItem := testStack.Pop()
 
-	assert.ErrorContains(t, err, "stack empty")
 	assert.Equal(t, "", actualItem)
 }
 
