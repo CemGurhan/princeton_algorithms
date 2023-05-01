@@ -5,33 +5,53 @@ import (
 
 	sq "github.com/cemgurhan/princetonalgo/stacks_and_queues/stacks/array"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPush_WithEmptyStack_SuccessfullyAddsItemToTopOfStack(t *testing.T) {
-	testStack := sq.Stack[string]{}
+	actualStack := sq.Stack[string]{}
 
 	expectedStack := sq.Stack[string]{"Friend"}
-	actualStack := testStack.Push("Friend")
+	actualStack.Push("Friend")
 
-	assert.Equal(t, expectedStack, *actualStack)
+	assert.Equal(t, expectedStack, actualStack)
 }
 
 func TestPush_WithNonEmptyStack_SuccessfullyAddsItemToTopOfStack(t *testing.T) {
-	testStack := sq.Stack[string]{"Hello"}
+	actualStack := sq.Stack[string]{"Hello"}
 
 	expectedStack := sq.Stack[string]{"Hello", "Friend"}
-	actualStack := testStack.Push("Friend")
+	actualStack.Push("Friend")
 
-	assert.Equal(t, expectedStack, *actualStack)
+	assert.Equal(t, expectedStack, actualStack)
 }
 
 func TestPop_WithNonEmptyStack_SuccessfullyRemovesAndReturnsItemFromTopOfStack(t *testing.T) {
 	testStack := sq.Stack[string]{"Hello", "There", "Friend"}
 
-	actualItem := testStack.Pop()
+	actualItem, err := testStack.Pop()
 	expectedItem := "Friend"
 
+	require.NoError(t, err)
 	assert.Equal(t, expectedItem, actualItem)
+}
+
+func TestPop_WithEmptyStringStack_ReturnsErrorAndEmptyString(t *testing.T) {
+	testStack := sq.Stack[string]{}
+
+	actualItem, err := testStack.Pop()
+
+	require.ErrorContains(t, err, "cannot pop from empty stack")
+	assert.Equal(t, "", actualItem)
+}
+
+func TestPop_WithEmptyIntStack_ReturnsErrorAndZero(t *testing.T) {
+	testStack := sq.Stack[int]{}
+
+	actualItem, err := testStack.Pop()
+
+	require.ErrorContains(t, err, "cannot pop from empty stack")
+	assert.Equal(t, 0, actualItem)
 }
 
 func TestIsEmpty_WithEmptyStack_ReturnsTrue(t *testing.T) {
@@ -40,14 +60,6 @@ func TestIsEmpty_WithEmptyStack_ReturnsTrue(t *testing.T) {
 	actualBool := testStack.IsEmpty()
 
 	assert.Equal(t, expectedBool, actualBool)
-}
-
-func TestPop_WithEmptyStack_ReturnsEmptyString(t *testing.T) {
-	testStack := sq.Stack[string]{}
-
-	actualItem := testStack.Pop()
-
-	assert.Equal(t, "", actualItem)
 }
 
 func TestFindMaxItem_WithNonEmptyStack_ReturnsMaxItem(t *testing.T) {
