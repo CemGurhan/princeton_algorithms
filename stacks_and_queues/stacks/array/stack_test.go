@@ -3,7 +3,7 @@ package stacksandqueues_test
 import (
 	"testing"
 
-	sq "github.com/cemgurhan/princetonalgo/stacks_and_queues/stacks"
+	sq "github.com/cemgurhan/princetonalgo/stacks_and_queues/stacks/array"
 	"github.com/stretchr/testify/assert"
 )
 
