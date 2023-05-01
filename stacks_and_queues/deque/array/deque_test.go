@@ -27,6 +27,17 @@ func TestSize_DequeWithNoItems_ReturnsZero(t *testing.T) {
 func TestAddFirst_ToNonEmptyDeque_AddsItemToFrontOfDeque(t *testing.T) {
 	expectedDeque := dq.Deque[string]{"Hi", "There", "Friend"}
 
+	actualDeque := make(dq.Deque[string], 2, 3)
+	actualDeque[0] = "There"
+	actualDeque[1] = "Friend"
+	actualDeque.AddFirst("Hi")
+
+	assert.Equal(t, expectedDeque, actualDeque)
+}
+
+func TestAddFirst_ToFullCapacityDeque_AddsItemToFrontOfDeque(t *testing.T) {
+	expectedDeque := dq.Deque[string]{"Hi", "There", "Friend"}
+
 	actualDeque := dq.Deque[string]{"There", "Friend"}
 	actualDeque.AddFirst("Hi")
 
@@ -43,6 +54,18 @@ func TestAddFirst_ToEmptyDeque_AddsItemToFrontOfDeque(t *testing.T) {
 }
 
 func TestAddLast_ToNonEmptyDeque_AddsItemToBackOfDeque(t *testing.T) {
+	expectedDeque := dq.Deque[int]{0, 2, 4, 55}
+
+	actualDeque := make(dq.Deque[int], 3, 4)
+	actualDeque[0] = 0
+	actualDeque[1] = 2
+	actualDeque[2] = 4
+	actualDeque.AddLast(55)
+
+	assert.Equal(t, expectedDeque, actualDeque)
+}
+
+func TestAddLast_ToFullCapicityDeque_AddsItemToBackOfDeque(t *testing.T) {
 	expectedDeque := dq.Deque[int]{0, 2, 4, 55}
 
 	actualDeque := dq.Deque[int]{0, 2, 4}

@@ -11,52 +11,49 @@ func (d *Deque[T]) Size() int {
 
 // add item to the front of the deque
 func (d *Deque[T]) AddFirst(item T) {
-	newDeque := make(Deque[T], len(*d)+1)
-
-	for i := len(newDeque) - 1; i > -1; i-- {
-		if i == 0 {
-			newDeque[i] = item
-			continue
+	dequeLength := len(*d)
+	if cap(*d) == dequeLength {
+		newDeque := make(Deque[T], dequeLength+1, 2*(dequeLength+1))
+		for i := 0; i < dequeLength; i++ {
+			newDeque[i+1] = (*d)[i]
 		}
-		newDeque[i] = (*d)[i-1]
+		newDeque[0] = item
+		*d = newDeque
+		return
 	}
+	newDeque := make(Deque[T], dequeLength+1)
+	newDeque[0] = item
+	copy(newDeque[1:], *d)
 
 	*d = newDeque
 }
 
 // add item to the back of the deque
 func (d *Deque[T]) AddLast(item T) {
-	newDeque := make(Deque[T], len(*d)+1)
-
-	for i := range newDeque {
-		if i == len(newDeque)-1 {
-			newDeque[i] = item
-			continue
+	dequeLength := len(*d)
+	if cap(*d) == dequeLength {
+		newDeque := make(Deque[T], dequeLength+1, 2*(dequeLength+1))
+		for i, originalItem := range *d {
+			newDeque[i] = originalItem
 		}
-		newDeque[i] = (*d)[i]
+		newDeque[dequeLength] = item
+		(*d) = newDeque
+		return
 	}
-
-	*d = newDeque
+	*d = (*d)[:dequeLength+1]
+	(*d)[dequeLength] = item
 }
 
 // remove and return the item from the front
 func (d *Deque[T]) RemoveFirst() (T, error) {
 	var removedItem T
+
 	if d.IsEmpty() {
 		return removedItem, errors.New("cannot remove from empty deque")
 	}
 
-	newDeque := make(Deque[T], len(*d)-1)
-
-	for i := 0; i < len(*d); i++ {
-		if i == 0 {
-			removedItem = (*d)[i]
-			continue
-		}
-		newDeque[i-1] = (*d)[i]
-	}
-
-	*d = newDeque
+	removedItem = (*d)[0]
+	*d = (*d)[1:]
 
 	return removedItem, nil
 }
