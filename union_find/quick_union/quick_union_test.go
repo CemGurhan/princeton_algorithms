@@ -27,3 +27,27 @@ func TestFindRoot_WhenIndexIsNotInTree_Panics(t *testing.T) {
 
 	assert.Panics(t, func() { tree.FindRoot(10) })
 }
+
+func TestWeightedUnion_BetweenTwoTreesOfDifferentSize_ConnectsRootOfSmallerToLarger(t *testing.T) {
+	expectedTree := Tree{0, 0, 2, 5, 0, 4, 6, 9, 8, 1}
+	actualTree := Tree{0, 0, 2, 5, 4, 4, 6, 9, 8, 1}
+	sizeArray := make(SizeArray, len(expectedTree))
+
+	sizeArray[0] = 4
+	sizeArray[4] = 3
+	actualTree.WeightedUnion(9, 5, sizeArray)
+
+	assert.Equal(t, expectedTree, actualTree)
+}
+
+func TestWeightedUnion_BetweenTwoTreesOfSameSize_ConnectsRootOfOneToAnother(t *testing.T) {
+	expectedTree := Tree{4, 0, 2, 5, 4, 4, 6, 7, 8, 1}
+	actualTree := Tree{0, 0, 2, 5, 4, 4, 6, 7, 8, 1}
+	sizeArray := make(SizeArray, len(expectedTree))
+
+	sizeArray[0] = 3
+	sizeArray[4] = 3
+	actualTree.WeightedUnion(9, 5, sizeArray)
+
+	assert.Equal(t, expectedTree, actualTree)
+}

@@ -2,23 +2,23 @@ package quickunion
 
 type Tree []int
 
-//  0  1  2  3  4  5  6  7  8  9
-// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-// 0  1  2  3  4  5  6  7  8  9
-// 0  0  2  5  4  4  6  9  8  1
+type SizeArray []int
 
 func (t *Tree) FindRoot(startingIndex int) int {
 	pointer := (*t)[startingIndex]
-	for true {
+	for pointer != (*t)[pointer] {
 		pointer = (*t)[pointer]
-		if pointer == (*t)[pointer] {
-			break
-		}
 	}
 	return pointer
 }
 
-func (t *Tree) WeightedUnion(indexOne int, indexTwo int) {
+func (t *Tree) WeightedUnion(indexOne int, indexTwo int, sizeArray []int) {
+	rootOfTreeOne := t.FindRoot(indexOne)
+	rootOfTreeTwo := t.FindRoot(indexTwo)
 
+	if sizeArray[rootOfTreeOne] <= sizeArray[rootOfTreeTwo] {
+		(*t)[rootOfTreeOne] = rootOfTreeTwo
+	} else if sizeArray[rootOfTreeOne] >= sizeArray[rootOfTreeTwo] {
+		(*t)[rootOfTreeTwo] = rootOfTreeOne
+	}
 }
