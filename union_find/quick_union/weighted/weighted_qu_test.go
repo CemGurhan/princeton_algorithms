@@ -1,4 +1,4 @@
-package quickunion
+package weighted
 
 import (
 	"testing"
@@ -54,7 +54,8 @@ func TestWeightedUnion_BetweenTwoTreesOfDifferentSize_ConnectsRootOfSmallerToLar
 
 	sizeArray[0] = 4
 	sizeArray[4] = 3
-	actualTree.WeightedUnion(9, 5, sizeArray)
+	err := actualTree.WeightedUnion(9, 5, sizeArray)
+	require.NoError(t, err)
 
 	assert.Equal(t, expectedTree, actualTree)
 }
@@ -66,8 +67,22 @@ func TestWeightedUnion_BetweenTwoTreesOfSameSize_ConnectsRootOfOneToAnother(t *t
 
 	sizeArray[0] = 3
 	sizeArray[4] = 3
-	actualTree.WeightedUnion(9, 5, sizeArray)
+	err := actualTree.WeightedUnion(9, 5, sizeArray)
+	require.NoError(t, err)
 
+	assert.Equal(t, expectedTree, actualTree)
+}
+
+func TestWeightedUnion_WhenTreesAreAlreadyConnected_ReturnsError(t *testing.T) {
+	expectedTree := Tree{0, 0, 2, 5, 0, 4, 6, 7, 8, 1}
+	actualTree := Tree{0, 0, 2, 5, 0, 4, 6, 7, 8, 1}
+	sizeArray := make(SizeArray, len(expectedTree))
+
+	sizeArray[0] = 3
+	sizeArray[4] = 3
+	err := actualTree.WeightedUnion(9, 5, sizeArray)
+
+	assert.ErrorContains(t, err, "trees are already connected")
 	assert.Equal(t, expectedTree, actualTree)
 }
 

@@ -1,4 +1,4 @@
-package quickunion
+package weighted
 
 import (
 	"errors"
@@ -33,6 +33,10 @@ func (t *Tree) WeightedUnion(indexOne int, indexTwo int, sizeArray []int) error 
 	rootOfTreeTwo, err := t.FindRoot(indexTwo)
 	if err != nil {
 		return fmt.Errorf("error during union: %w", err)
+	}
+
+	if rootOfTreeOne == rootOfTreeTwo {
+		return errors.New("trees are already connected")
 	}
 
 	if sizeArray[rootOfTreeOne] <= sizeArray[rootOfTreeTwo] {
