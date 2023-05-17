@@ -9,16 +9,15 @@ type Tree []int
 
 type SizeArray []int
 
-func (t *Tree) FindRoot(startingIndex int) (int, error) {
+func (t *Tree) FindRoot(index int) (int, error) {
 	if len(*t) == 0 {
 		return 0, errors.New("tree is empty")
 	}
 
-	pointer := (*t)[startingIndex]
-	for pointer != (*t)[pointer] {
-		pointer = (*t)[pointer]
+	for index != (*t)[index] {
+		index = (*t)[index]
 	}
-	return pointer, nil
+	return index, nil
 }
 
 func (t *Tree) WeightedUnion(indexOne int, indexTwo int, sizeArray []int) error {

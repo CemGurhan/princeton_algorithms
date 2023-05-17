@@ -9,16 +9,16 @@ type Tree []int
 
 type SizeArray []int
 
-func (t *Tree) FindRoot(startingIndex int) (int, error) {
+func (t *Tree) FindRoot(index int) (int, error) {
 	if len(*t) == 0 {
 		return 0, errors.New("tree is empty")
 	}
 
-	pointer := (*t)[startingIndex]
-	for pointer != (*t)[pointer] {
-		pointer = (*t)[pointer]
+	for index != (*t)[index] {
+		(*t)[index] = (*t)[(*t)[index]]
+		index = (*t)[index]
 	}
-	return pointer, nil
+	return index, nil
 }
 
 func (t *Tree) WeightedUnionPathCompression(indexOne int, indexTwo int, sizeArray []int) error {
@@ -33,6 +33,10 @@ func (t *Tree) WeightedUnionPathCompression(indexOne int, indexTwo int, sizeArra
 	rootOfTreeTwo, err := t.FindRoot(indexTwo)
 	if err != nil {
 		return fmt.Errorf("error during union: %w", err)
+	}
+
+	if rootOfTreeOne == rootOfTreeTwo {
+		return errors.New("trees are already connected")
 	}
 
 	if sizeArray[rootOfTreeOne] <= sizeArray[rootOfTreeTwo] {
