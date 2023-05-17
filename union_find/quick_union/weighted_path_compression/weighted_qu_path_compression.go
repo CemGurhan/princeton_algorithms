@@ -9,6 +9,7 @@ type Tree []int
 
 type SizeArray []int
 
+// attach each node to it's grandparent
 func (t *Tree) FindRoot(index int) (int, error) {
 	if len(*t) == 0 {
 		return 0, errors.New("tree is empty")
