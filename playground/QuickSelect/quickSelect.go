@@ -1,0 +1,3 @@
+package quickselect
+
+func QuickSelect()
